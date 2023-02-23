@@ -306,7 +306,15 @@ else
 $(warning Skipping build of hybris-updater-script since HYBRIS_BOOT_PART is not specified)
 endif
 
-HYBRIS_COMMON_ANDROID8_TARGETS := verity_signer boot_signer e2fsdroid vendorimage ramdisk libsurfaceflinger libhwc2_compat_layer bootctl fec
+HYBRIS_COMMON_ANDROID8_TARGETS := verity_signer boot_signer e2fsdroid vendorimage ramdisk libhwc2_compat_layer bootctl fec
+
+ifeq ($(shell test $(ANDROID_VERSION_MAJOR) -le 12 && echo true),true)
+HYBRIS_COMMON_ANDROID8_TARGETS += libsurfaceflinger
+endif
+
+ifeq ($(shell test $(ANDROID_VERSION_MAJOR) -ge 12 && echo true),true)
+HYBRIS_COMMON_ANDROID8_TARGETS += apexd
+endif
 
 ifeq ($(shell test $(ANDROID_VERSION_MAJOR) -ge 8 && echo true),true)
 HYBRIS_COMMON_TARGETS += $(HYBRIS_COMMON_ANDROID8_TARGETS)
